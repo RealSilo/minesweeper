@@ -22,12 +22,12 @@ class Table extends Component {
       for (var i = 0; i < this.props.sizeY; i++) {
         arr[i] = [];
         for (var j = 0; j < this.props.sizeX; j++) {
-          arr[i][j] = 0;
+          arr[i][j] = { value: 0, state: 'closed' }
         }
       }
       return arr;
     }
-    
+
     const addBombs = (map) => {
       let bombFields = [];
       
@@ -44,7 +44,7 @@ class Table extends Component {
         if (j === -1) {
           j = this.props.sizeX - 1;
         }
-        map[i][j] = 'b';
+        map[i][j]['value'] = 'b';
       });
     }
 
@@ -53,8 +53,8 @@ class Table extends Component {
         map.forEach((field, j) => {
           for (let x = -1; x <= 1; x++) {
             for (let y = -1; y <= 1; y++ ) {
-              if (map[i + x] && map[i + x][j + y] === 'b' && map[i][j] !== 'b') {
-                map[i][j]++;
+              if (map[i + x] && map[i + x][j + y] && map[i + x][j + y]['value'] === 'b' && map[i][j]['value'] !== 'b') {
+                map[i][j]['value']++;
               }
             }
           }
@@ -69,9 +69,63 @@ class Table extends Component {
   }
 
   revealField (i, j) {
-    let table = this.state.table;
-    table[i][j] = 'A';
+    if (table[i][j]['value'] === 'b') {
+      alert('You lost!');
+    }
+
+    this.openFields(i, j);
+  }
+
+  openFields(i, j) {
+    table = this.state.table;
+    let queue = [[i, j]];
+
+    if (table[i][j]['value'] > 0) {
+      table[i][j]['state'] = 'revealed';
+      this.checkWin(table);
+      this.setState(table: table);
+      return;
+    }
+
+    while (queue.length > 0) {
+      const coords = queue.shift();
+      const k = coords[0];
+      const l = coords[1];
+
+      if (table[k][l]['state'] === 'revealed') {
+        continue;
+      }
+      table[k][l]['state'] = 'revealed';
+
+      for (let x = -1; x <= 1; x++) {
+        for (let y = -1; y <= 1; y++) {
+          if (table[k + x] && table[k + x][l + y] && table[k + x][l + y]['value'] !== 'b') {
+            if (table[k + x][l + y]['value'] === 0) {
+              if (x === 0 || y === 0) {
+                queue.push([k + x, l + y]);
+              }
+            } else {
+              table[k + x][l + y]['state'] = 'revealed';
+            }
+          }
+        }
+      }
+    }
+
+
+    this.checkWin(table);
     this.setState(table: table);
+  }
+
+  checkWin(table) {
+    for (let i = 0; i < this.props.sizeX; i++) {
+      for (let j = 0; j < this.props.sizeY; j++) {
+        if (table[i][j]['value'] !== 'b' && table[i][j]['state'] !== 'revealed') {
+          return;
+        }
+      }
+    }
+    alert('You won');
   }
 
   render() {

@@ -7,7 +7,8 @@ const Row = ({row, revealField}) => {
     return (
       <span key={index}>
         <Field
-          field={field}
+          value={field['value']}
+          revealed={field['state']}
           j={index}
           revealField={(j) => revealField(j)} />
       </span>
