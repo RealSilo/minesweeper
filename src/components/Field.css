@@ -1,0 +1,14 @@
+.field {
+  min-height: 25px;
+  min-width: 25px;
+  float: left;
+  text-align: center;
+  cursor: pointer;
+  line-height: 25px;
+  font-weight: bold;
+  border: 1px inset #666;
+}
+
+// .field .text {
+//   visibility: hidden
+// }

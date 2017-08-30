@@ -1,0 +1,14 @@
+.select {
+  max-width: 40px;
+  width: 40px;
+}
+
+.Select-control {
+  height: 30px;
+  max-width: 30px;
+}
+
+.form-field-name {
+  max-width: 40px;
+  width: 40px;
+}
