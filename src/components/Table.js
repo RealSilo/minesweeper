@@ -6,22 +6,25 @@ class Table extends Component {
     super(props);
 
     this.state = {
-      table: this.createTable()
+      table: this.createTable(props)
     }
 
-    window.table = this.state.table;
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({table: this.createTable()});
+    this.setState({table: this.createTable(nextProps)});
   }
 
-  createTable() {
+  createTable(props) {
+    const sizeX = props.sizeX;
+    const sizeY = props.sizeY;
+    const bombNumber = props.bombNumber;
+
     const createMap = () => {
       let arr = []
-      for (var i = 0; i < this.props.sizeY; i++) {
+      for (var i = 0; i < sizeY; i++) {
         arr[i] = [];
-        for (var j = 0; j < this.props.sizeX; j++) {
+        for (var j = 0; j < sizeX; j++) {
           arr[i][j] = { value: 0, state: 'closed' }
         }
       }
@@ -31,18 +34,18 @@ class Table extends Component {
     const addBombs = (map) => {
       let bombFields = [];
       
-      while (bombFields.length < this.props.bombNumber) {
-        const randomNumber = Math.floor(Math.random() * (this.props.sizeY * this.props.sizeX - 1))
+      while (bombFields.length < bombNumber) {
+        const randomNumber = Math.floor(Math.random() * (sizeY * sizeX - 1))
         if (!bombFields.includes(randomNumber)) {
           bombFields.push(randomNumber);
         }
       }
 
       bombFields.forEach((number) => {
-        const i = Math.floor(number / this.props.sizeX);
-        let j = (number % this.props.sizeX);
+        const i = Math.floor(number / sizeX);
+        let j = (number % sizeX);
         if (j === -1) {
-          j = this.props.sizeX - 1;
+          j = sizeX - 1;
         }
         map[i][j]['value'] = 'b';
       });
@@ -53,7 +56,7 @@ class Table extends Component {
         map.forEach((field, j) => {
           for (let x = -1; x <= 1; x++) {
             for (let y = -1; y <= 1; y++ ) {
-              if (map[i + x] && map[i + x][j + y] && map[i + x][j + y]['value'] === 'b' && map[i][j]['value'] !== 'b') {
+              if (map[i][j] && map[i + x] && map[i + x][j + y] && map[i + x][j + y]['value'] === 'b' && map[i][j]['value'] !== 'b') {
                 map[i][j]['value']++;
               }
             }
@@ -69,15 +72,25 @@ class Table extends Component {
   }
 
   revealField (i, j) {
-    if (table[i][j]['value'] === 'b') {
+    if (this.state.table[i][j]['value'] === 'b') {
       alert('You lost!');
     }
 
     this.openFields(i, j);
   }
 
+  markBomb (i, j) {
+    let table = this.state.table;
+    if (table[i][j]['state'] === 'closed'){
+      table[i][j]['state'] = 'marked';
+    } else if (table[i][j]['state'] === 'marked') {
+      table[i][j]['state'] = 'closed';
+    }
+    this.setState(table: table);
+  }
+
   openFields(i, j) {
-    table = this.state.table;
+    let table = this.state.table;
     let queue = [[i, j]];
 
     if (table[i][j]['value'] > 0) {
@@ -101,9 +114,7 @@ class Table extends Component {
         for (let y = -1; y <= 1; y++) {
           if (table[k + x] && table[k + x][l + y] && table[k + x][l + y]['value'] !== 'b') {
             if (table[k + x][l + y]['value'] === 0) {
-              if (x === 0 || y === 0) {
-                queue.push([k + x, l + y]);
-              }
+              queue.push([k + x, l + y]);
             } else {
               table[k + x][l + y]['state'] = 'revealed';
             }
@@ -112,7 +123,6 @@ class Table extends Component {
       }
     }
 
-
     this.checkWin(table);
     this.setState(table: table);
   }
@@ -120,7 +130,7 @@ class Table extends Component {
   checkWin(table) {
     for (let i = 0; i < this.props.sizeX; i++) {
       for (let j = 0; j < this.props.sizeY; j++) {
-        if (table[i][j]['value'] !== 'b' && table[i][j]['state'] !== 'revealed') {
+        if (table[i][j] && table[i][j]['value'] !== 'b' && table[i][j]['state'] !== 'revealed') {
           return;
         }
       }
@@ -137,6 +147,7 @@ class Table extends Component {
               row={row}
               key={index}
               revealField={(j) => this.revealField(index, j)}
+              markBomb={(j) => this.markBomb(index, j)}
             />
           </div>
         </div>

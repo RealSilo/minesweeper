@@ -2,15 +2,17 @@ import React from 'react';
 import './Row.css';
 import Field from './Field';
 
-const Row = ({row, revealField}) => {
+const Row = ({row, revealField, markBomb}) => {
   const fields = row.map((field, index) => {
     return (
       <span key={index}>
         <Field
           value={field['value']}
-          revealed={field['state']}
+          state={field['state']}
           j={index}
-          revealField={(j) => revealField(j)} />
+          revealField={(j) => revealField(j)}
+          markBomb={(j) => markBomb(j)}
+        />
       </span>
     );
   });
