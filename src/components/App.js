@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import Header from './Header'
-import Table from './Table'
+import Counter from './Counter';
+import Header from './Header';
+import Table from './Table';
 
 const DEFAULT_SIZE = 10;
 const DEFAULT_BOMB_NUMBER = 10;
@@ -53,27 +54,39 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
         <div className="container">
-          <Header
-            sizeX={this.state.sizeX}
-            sizeY={this.state.sizeY}
-            maxBombNumber={this.state.maxBombNumber}
-            bombNumber={this.state.bombNumber}
-            lastTime={this.state.lastTime}
-            bestTime={this.state.bestTime}
-            wins={this.state.wins}
-            onBombNumberChange={selected => this.updateBombNumber(selected)}
-            onSizeXChange={selected => this.updateSizeX(selected)}
-            onSizeYChange={selected => this.updateSizeY(selected)}
-          />
-          <Table 
-            sizeX={this.state.sizeX}
-            sizeY={this.state.sizeY}
-            bombNumber={this.state.bombNumber}
-          />
+          <div className="row row-section">
+            <div className="col-md-6 col-md-offset-3">
+              <Counter
+                lastTime={this.state.lastTime}
+                bestTime={this.state.bestTime}
+                wins={this.state.wins}
+              />
+            </div>
+          </div>
+          <div className="row row-section">
+            <div className="col-md-6 col-md-offset-3">
+              <Header
+                sizeX={this.state.sizeX}
+                sizeY={this.state.sizeY}
+                maxBombNumber={this.state.maxBombNumber}
+                bombNumber={this.state.bombNumber}
+                onBombNumberChange={selected => this.updateBombNumber(selected)}
+                onSizeXChange={selected => this.updateSizeX(selected)}
+                onSizeYChange={selected => this.updateSizeY(selected)}
+              />
+            </div> 
+          </div>
+          <div className="row row-section">
+            <div className="col-md-6 col-md-offset-3">
+              <Table 
+                sizeX={this.state.sizeX}
+                sizeY={this.state.sizeY}
+                bombNumber={this.state.bombNumber}
+              />
+            </div>
+          </div>
         </div>
-      </div>
     );
   }
 }

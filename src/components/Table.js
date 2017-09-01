@@ -141,24 +141,20 @@ class Table extends Component {
   render() {
     const rows = this.state.table.map((row, index) => {
       return (
-        <div className="row" key={index}>
-          <div className="col-md-12">
-            <Row 
-              row={row}
-              key={index}
-              revealField={(j) => this.revealField(index, j)}
-              markBomb={(j) => this.markBomb(index, j)}
-            />
-          </div>
+        <div key={index}>
+          <Row 
+            row={row}
+            key={index}
+            revealField={(j) => this.revealField(index, j)}
+            markBomb={(j) => this.markBomb(index, j)}
+          />
         </div>
       );
     });
 
     return (
-      <div className="Table">
-        <div className="row">
-          {rows}
-        </div>
+      <div className="grid-row">
+        {rows}
       </div>
     );
   }

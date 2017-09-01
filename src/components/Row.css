@@ -1,3 +1,4 @@
-.row {
-  display: grid;
+.grid-row {
+  display: inline-grid;
+  width: 100%;
 }

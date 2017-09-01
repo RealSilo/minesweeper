@@ -1,27 +1,12 @@
-.select {
-  max-width: 200px;
-  width: 100%;
-  display: inline-block;
+.form-control {
+  width: 50px;
+  display:inline-block;
 }
 
-.Select-control {
-  height: 30px;
-  max-width: 30px;
-  display: inline-block;
+.settings{
+  padding-right: 10px;
 }
 
-.form-field-name {
-  max-width: 40px;
-  width: 40px;
-  display: inline-block;
-}
-
-.menu {
-  width: 100%;
-  max-width: 400px;
-  display: inline-block;
-}
-
-.Select-placeholder, .Select--single > .Select-control .Select-value {
-  width: 100%;
+.settings:not(:first-child) {
+  padding-left: 10px;
 }

@@ -1,6 +1,5 @@
 import React from 'react';
-import Select from 'react-select';
-import 'react-select/dist/react-select.css';
+import './Header.css';
 
 const Header = (
   {
@@ -8,82 +7,66 @@ const Header = (
     sizeY,
     maxBombNumber,
     bombNumber,
-    lastTime,
-    bestTime,
-    wins,
     onBombNumberChange,
     onSizeXChange,
     onSizeYChange
   }) => {
 
-  const bombNumberChange = (selected) => {
-    onBombNumberChange(selected['value']);
-  }
-
-  const sizeXChange = (selected) => {
-    onSizeXChange(selected['value']);
-  }
-
-  const sizeYChange = (selected) => {
-    onSizeYChange(selected['value']);
-  }
-
-  const getBombNumberOptions = () => {
-    let options = [];
-    
-    for (var i = 0; i < maxBombNumber; i++) {
-      options.push({value: i + 1, label: `${i + 1}` });
-    }
-
-    return options;
-  }
-
-  const getSizeOptions = () => {
+  const sizeOptionValues = () => {
     let options = [];
     
     for (var i = 0; i < 10; i++) {
-      options.push({value: i + 1, label: `${i + 1}` });
+      options.push(<option key={i+ 1} value={i + 1}>{i + 1}</option>);
     }
 
     return options;
   }
 
-  const bombNumberOptions = getBombNumberOptions();
-  const sizeOptions = getSizeOptions();
-  // window.options = options;
+  const bombNumberChange = (selected) => {
+    onBombNumberChange(parseInt(selected), 10);
+  }
+
+  const sizeXChange = (selected) => {
+    onSizeXChange(parseInt(selected), 10);
+  }
+
+  const sizeYChange = (selected) => {
+    onSizeYChange(parseInt(selected), 10);
+  }
+
+  const bombNumberOptionValues = () => {
+    let options = [];
+    
+    for (var i = 0; i < maxBombNumber; i++) {
+      options.push(<option key={i+ 1} value={i + 1}>{i + 1}</option>);
+    }
+
+    return options;
+  }
 
   return (
-    <div className="row">
-      <div className="col-md-12">
-        <span>Size X</span>
-        <Select
-          name="form-field-name"
-          value={sizeX}
-          options={sizeOptions}
-          onChange={sizeXChange}
-        />
-        <span>Size Y</span>
-        <Select
-          name="form-field-name"
-          value={sizeY}
-          options={sizeOptions}
-          onChange={sizeYChange}
-        />
-        <span className="select">
-          <span>BombNumber</span>
-          <Select
-            name="form-field-name"
-            value={bombNumber}
-            options={bombNumberOptions}
-            onChange={bombNumberChange}
-          />
-        </span>
-      </div>
-      <div className="col-md-12">
-        <span>Last time: {lastTime} </span>
-        <span>Best time: {bestTime} </span>
-        <span>Wins: {wins}</span>
-      </div>
+    <div>
+      <span className="settings"><strong>Size X:</strong></span>
+      <select
+        className="form-control"
+        value={sizeX}
+        onChange={event => sizeXChange(event.target.value)}>
+        {sizeOptionValues()}
+      </select>
+      <span className="settings"><strong>Size Y:</strong></span>
+      <select
+        className="form-control"
+        value={sizeY}
+        onChange={event => sizeYChange(event.target.value)}>
+        {sizeOptionValues()}
+      </select>
+      <span className="settings"><strong>Bomb Number:</strong></span>
+      <select
+        className="form-control"
+        value={bombNumber}
+        onChange={event => bombNumberChange(event.target.value)}>
+        {bombNumberOptionValues()}
+      </select>
     </div>
   );
 }
