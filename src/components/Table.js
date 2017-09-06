@@ -123,19 +123,24 @@ class Table extends Component {
       }
     }
 
-    this.checkWin(table);
+    
     this.setState(table: table);
+    this.checkWin(table);
   }
 
   checkWin(table) {
     for (let i = 0; i < this.props.sizeX; i++) {
       for (let j = 0; j < this.props.sizeY; j++) {
+        console.log([i, j]);
         if (table[i][j] && table[i][j]['value'] !== 'b' && table[i][j]['state'] !== 'revealed') {
           return;
         }
       }
     }
+    this.props.incrementWins();
+
     alert('You won');
+    console.log('haha');
   }
 
   render() {

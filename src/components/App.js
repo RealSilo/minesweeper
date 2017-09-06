@@ -5,7 +5,7 @@ import Header from './Header';
 import Table from './Table';
 
 const DEFAULT_SIZE = 10;
-const DEFAULT_BOMB_NUMBER = 10;
+const DEFAULT_BOMB_NUMBER = 20;
 
 class App extends Component {
   constructor (props) {
@@ -52,6 +52,11 @@ class App extends Component {
     });
   }
 
+  incrementWins () {
+    const wins = this.state.wins + 1;
+    this.setState({wins});
+  }
+
   render() {
     return (
         <div className="container">
@@ -83,6 +88,7 @@ class App extends Component {
                 sizeX={this.state.sizeX}
                 sizeY={this.state.sizeY}
                 bombNumber={this.state.bombNumber}
+                incrementWins={() => this.incrementWins()}
               />
             </div>
           </div>
